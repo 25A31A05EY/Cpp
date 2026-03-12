@@ -1,0 +1,30 @@
+class Message {
+    string text;
+    static int global_id;
+    int id;
+public:
+    Message() = default;
+
+    Message(const string& text_) : text(text_) {
+        id = ++global_id;
+    }
+
+    const string& get_text() const {
+        return text;
+    }
+
+    bool operator<(const Message& other) const {
+        return id < other.id;
+    }
+};
+
+int Message::global_id = 0;
+
+class MessageFactory {
+public:
+    MessageFactory() {}
+
+    Message create_message(const string& text) {
+        return Message(text);
+    }
+};
