@@ -1,0 +1,45 @@
+struct Workshop {
+    int start;
+    int duration;
+    int end;
+};
+
+struct Available_Workshops {
+    int n;
+    Workshop* workshops;
+};
+
+Available_Workshops* initialize(int start_time[], int duration[], int n) {
+    auto* aw = new Available_Workshops;
+    aw->n = n;
+    aw->workshops = new Workshop[n];
+
+    for (int i = 0; i < n; ++i) {
+        aw->workshops[i].start = start_time[i];
+        aw->workshops[i].duration = duration[i];
+        aw->workshops[i].end = start_time[i] + duration[i];
+    }
+
+    // sort by end time (classic activity selection)
+    sort(aw->workshops, aw->workshops + n,
+         [](const Workshop& a, const Workshop& b) {
+             return a.end < b.end;
+         });
+
+    return aw;
+}
+
+int CalculateMaxWorkshops(Available_Workshops* ptr) {
+    if (ptr == nullptr || ptr->n == 0) return 0;
+
+    int count = 0;
+    int lastEnd = -1;
+
+    for (int i = 0; i < ptr->n; ++i) {
+        if (ptr->workshops[i].start >= lastEnd) {
+            ++count;
+            lastEnd = ptr->workshops[i].end;
+        }
+    }
+    return count;
+}
