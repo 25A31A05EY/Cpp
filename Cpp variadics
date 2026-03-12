@@ -1,0 +1,11 @@
+template <bool... digits>
+int reversed_binary_value() {
+    int result = 0;
+    int multiplier = 1;
+    bool values[] = {digits...};
+    for (bool b : values) {
+        if (b) result += multiplier;
+        multiplier <<= 1;
+    }
+    return result;
+}
